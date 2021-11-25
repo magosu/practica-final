@@ -44,7 +44,13 @@ Ten en cuenta lo siguiente:
 `git log --oneline --branches --graph --remotes`
 - **¿Qué comando has lanzado para crear el alias?**
 
+git config --local alias.milog "log --oneline --branches --graph --remotes"
+
 2. - **¿Están las dos ramas del repositorio trackeando las correspondientes ramas remotas? ¿Qué comando has usado para averiguarlo?**
+
+git branch –a (veo todas las ramas)
+git checkout develop (para saltar a la rama develop porque al principio no la tengo en local)
+git branch -avv (veo todas las ramas y si están trackeadas)
 
 3. - Modifica el texto de los botones iniciales de login en `src/Library.java`:
 · Sustituye "Librarian Login" por "Log in as librarian".
@@ -65,6 +71,8 @@ cYZxU!4Asr*LR3Nf
 
 - **¿Qué comando has usado para hacer el punto anterior?**
 
+git commit  --amend
+
 6. - En `src/BooksForm.java`, cambia "books" por "book" en todas las strings en las que aparezca (sólo en las strings, no tienes que cambiar ningún nombre de variable).
 - Crea un _commit_ con la modificación.
 
@@ -73,12 +81,19 @@ cYZxU!4Asr*LR3Nf
 - Te has arrepentido: ahora crees que sería mejor que estuviera todo en un solo _commit_. Haz los pasos necesarios para que tu rama temporal tenga un solo _commit_, sin tocar nada del código de los archivos.
 - **¿Qué comandos has usado para conseguir el punto anterior?**
 
+git reset HEAD~3 --soft
+git commit -m “Unificar commits de cambiar engine de las tabas en archivos .sql”
+
+
 8. - Vuelven a pedirte que cambies la contraseña del admin (`src/AdminLogin.java`, línea 68) por esta otra: uV2?bbX4[3hFw
 - Crea un _commit_ con el cambio
 
 9. - Mueve HEAD hasta el _commit_ que creaste en el punto 5 y comprueba que los archivos .sql tenían aún las tablas con ENGINE=InnoDB (lo cambiaste dos puntos después).
 - Ahora vuelve a mover HEAD al _commit_ en el que estabas.
 - **¿Qué comando has lanzado para hacer esto último?**
+
+git checkout feature/tarea_9
+
 - En `src/DeleteLibrarian.java`, cambia el nombre de la variable lblEnterId por lblEnterLibrarianId (en todas las líneas donde aparezca).
 - Crea un _commit_ con el cambio.
 
@@ -92,15 +107,48 @@ siguiente tarea.
 - Crea un _commit_ con los cambios.
 - **¿Qué comandos has lanzado para los dos puntos anteriores?**
 
+git rm --cached -r .settings/
+git rm --cached .project
+
+En .gitignore pongo la carpeta .settings/ y el archivo .project para que el repositorio los ignore y no los vuelva a versionar.
+
+git add . para añadir el .gitignore al stage
+
+git commit –m “Desversionado la carpeta settings y el archivo project”
+
+
 12. - Haz esta tarea sin crear una rama temporal (vamos a simular un error), crearás el _commit_ en develop.
 - En `src/LibrarianSuccess.java`, sustituye el texto del botón "Return book" por "Return a book".
 - Crea un _commit_ con el cambio.
 - Te das cuenta de que has hecho el _commit_ en develop, cuando tenías que haber creado una nueva rama para ello y haber hecho el _commit_ ahí. Da los pasos necesarios para corregir el error. Pista: te será útil dibujar en un papel cómo ha quedado el log en cuanto a forma, _commits_ y “carteles” de ramas, y al lado dibujar cómo tendría que haber quedado todo si lo hubieras hecho bien.
 - **¿Qué comandos has lanzado para resolver el error?**
 
+Primero muevo develop al commit que debería haber estado, el commit del merge de la tarea_11
+git checkout  a0dc004
+git branch -f develop
+git checkout develop
+
+Creo la rama feature/tarea_12 y me muevo a ella
+git branch feature/tarea_12
+git checkout feature/tarea_12
+
+Busco con reflog el commit donde había cambiado el texto del botón “Return book”
+git reflog
+
+Hago un merge fast –forward
+git merge HEAD@{6}
+
+
 13. - Te piden que vuelvas a dejar la contraseña del admin como la que metiste en el punto 5. Teniendo en cuenta que ya tienes el cambio registrado en un _commit_, **¿qué harías para volver a poner esa contraseña sin tocar el código?** Pista: lo que quieres hacer es aplicar en tu rama los cambios de un _commit_ aislado.
 - Te tendrá que quedar un _commit_ nuevo, y cabe la posibilidad de que tengas que
 resolver algún conflicto.
+
+git cherry-pick -x 894e235
+
+Corrijo conflicto, con git status me aseguro que después de corregido el conflicto el archivo está en stage  y termino cherry-pick
+
+git cherry -pick --continue
+
 
 14. - En `src/DeleteLibrarian.java`, sustituye el label "Enter Id:" por "Enter librarian Id:" (esta vez sin errata).
 - Crea un _commit_ con el cambio.
@@ -116,3 +164,9 @@ resolver algún conflicto.
 
 17. - Tanto en local como en remoto sólo deberían quedar las ramas _main_ y _develop_.
 - **Describe las acciones que has realizado y/o comandos que has lanzado para comprobarlo, y para borrar las ramas que se te hubieran quedado colgadas durante el ejercicio**
+Para ver todas las ramas:
+git branch –a 
+
+Para borrar ramas que se han quedado colgadas:	
+git branch –d feature/nombre_rama   Borra las ramas locales
+git branch –r –d  origin/nombre_rama  Borra las ramas remotas 
