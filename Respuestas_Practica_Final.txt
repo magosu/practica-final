@@ -1,0 +1,78 @@
+TENER EN CUENTA:
+
+Tuve que hacerme un fork del repositorio original y trabajar en el, porque el de classroom solo 
+tenía una rama, la rama main.
+
+RESPUESTAS
+
+1.	¿Qué comando has lanzado para crear el alias?
+git config --local alias.milog "log --oneline --branches --graph --remotes"
+
+2.	¿Están las dos ramas del repositorio trackeando las correspondientes ramas remotas? 
+¿Qué comandos has usado para averiguarlo?
+git branch –a (veo todas las ramas)
+git checkout develop (para saltar a la rama develop porque al principio no la tengo en 
+local)
+git branch -avv (veo todas las ramas y si están trackeadas)
+
+5.	¿Qué comando has usado para hacer el punto anterior?
+git commit  --amend
+
+7.	¿Qué comandos has usado para conseguir el punto anterior?
+git reset HEAD~3 --soft
+git commit -m “Unificar commits de cambiar engine de las tabas en archivos .sql”
+
+9.	¿Qué comando has lanzado para hacer esto último?
+git checkout feature/tarea_9
+
+11.	¿Qué comandos has lanzado para los dos puntos anteriores?
+git rm --cached -r .settings/
+git rm --cached .project
+
+En .gitignore pongo la carpeta .settings/ y el archivo .project para que el repositorio los ignore y no los vuelva a versionar.
+
+git add . para añadir el .gitignore al stage
+
+git commit –m “Desversionado la carpeta settings y el archivo project”
+
+
+12.	¿Qué comandos has lanzado para resolver el error?
+
+Primero muevo develop al commit que debería haber estado, el commit del merge de la 
+tarea_11
+git checkout  a0dc004
+git branch -f develop
+git checkout develop
+
+Creo la rama feature/tarea_12 y me muevo a ella
+git branch feature/tarea_12
+git checkout feature/tarea_12
+
+Busco con reflog el commit donde había cambiado el texto del botón “Return book”
+git reflog
+
+Hago un merge fast –forward
+git merge HEAD@{6}
+
+13.	¿Qué harías para volver a poner esa contraseña esa contraseña sin tocar el código?
+git cherry-pick -x 894e235
+
+Corrijo conflicto, con git status me aseguro que después de corregido el conflicto el 
+archivo está en stage  y termino cherry-pick
+
+git cherry -pick --continue
+
+17.	Describe las acciones que has realizado y/o comandos que has lanzado para 
+comprobarlo, y para borrar las ramas que se te hubieran quedado colgadas durante el 
+ejercicio
+
+Para ver todas las ramas:
+git branch –a 
+
+Para borrar ramas que se han quedado colgadas:	
+git branch –d feature/nombre_rama  --> Borra las ramas locales
+git branch –r –d origin/feature/nombre_rama --> Borra las ramas remotas
+
+
+
+
